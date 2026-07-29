@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
-import logo from "@/assets/fortuners-logo-new.png.asset.json";
+import logo from "@/assets/fortuners-logo-new.png";
 
 const services = [
   { label: "Builders & Developers", to: "/services/builders" },
@@ -42,7 +42,7 @@ export function Nav() {
     >
       <div className="container-x flex items-center justify-between py-5">
         <Link to="/" className="flex items-center gap-3" onClick={closeMobile}>
-          <img src={logo.url} alt="Fortuners Group" className="h-14 md:h-20 w-auto" />
+          <img src={logo} alt="Fortuners Group" className="h-14 md:h-20 w-auto" />
           <span className="text-2xl md:text-3xl gold-title tracking-tight">
             Fortuners Group
           </span>

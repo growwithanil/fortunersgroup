@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useInView, revealCls } from "@/hooks/use-in-view";
 import { HardHat, Ruler, Zap, Wrench, ShieldCheck, ClipboardCheck, ArrowRight } from "lucide-react";
-import gallery3 from "@/assets/gallery-3.jpg.asset.json";
-import gallery4 from "@/assets/gallery-4.jpg.asset.json";
-import gallery5 from "@/assets/gallery-5.jpg.asset.json";
+import gallery3 from "@/assets/gallery-3.jpg";
+import gallery4 from "@/assets/gallery-4.jpg";
+import gallery5 from "@/assets/gallery-5.jpg";
 import practiceImg from "@/assets/construction-practice.jpg";
 import offeringTurnkey from "@/assets/construction-turnkey.jpg";
 import offeringHome from "@/assets/offering-villas.jpg";
@@ -45,7 +45,7 @@ function Hero() {
     <section ref={ref} className="relative pt-40 pb-24 bg-[#0b0b0b] text-white">
       <div
         className="absolute inset-0 opacity-40"
-        style={{ backgroundImage: `url(${gallery3.url})`, backgroundSize: "cover", backgroundPosition: "center" }}
+        style={{ backgroundImage: `url(${gallery3})`, backgroundSize: "cover", backgroundPosition: "center" }}
         aria-hidden
       />
       <div className="absolute inset-0 bg-gradient-to-b from-[#0b0b0b]/70 via-[#0b0b0b]/60 to-[#0b0b0b]" aria-hidden />
@@ -236,7 +236,7 @@ function Quality() {
       <div className="container-x grid gap-14 md:grid-cols-2 items-center">
         <div {...revealCls(inView, 0)} className={revealCls(inView, 0).className}>
           <div className="relative rounded-[2.5rem] overflow-hidden">
-            <img src={gallery5.url} alt="Quality controlled construction detail" className="w-full h-[520px] object-cover" />
+            <img src={gallery5} alt="Quality controlled construction detail" className="w-full h-[520px] object-cover" />
           </div>
         </div>
         <div>

@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Facebook, Instagram, Youtube, Linkedin, ChevronRight, ChevronDown } from "lucide-react";
 import { useInView, revealCls } from "@/hooks/use-in-view";
-import logo from "@/assets/fortuners-logo-new.png.asset.json";
+import logo from "@/assets/fortuners-logo-new.png";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -50,7 +50,7 @@ export function Footer() {
     >
       {/* Brand lockup */}
       <div {...revealCls(inView, 0)} className={"container-x pt-16 pb-10 text-center " + revealCls(inView, 0).className}>
-        <img src={logo.url} alt="Fortuners Group" className="mx-auto h-32 md:h-44 w-auto mb-6 rounded-2xl" />
+        <img src={logo} alt="Fortuners Group" className="mx-auto h-32 md:h-44 w-auto mb-6 rounded-2xl" />
         <div className="font-serif tracking-[0.25em] text-2xl sm:text-4xl md:text-6xl text-[#b89968]">
           FORTUNERS GROUP<span className="align-super text-xs">®</span>
         </div>

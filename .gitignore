@@ -32,6 +32,9 @@ dist-ssr
 .claude/
 tsconfig.tsbuildinfo
 
+# Deploy artifact (rebuild with `npm run build` — see DEPLOY.md)
+fortunersgroup-hostinger.zip
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

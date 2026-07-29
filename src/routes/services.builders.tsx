@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useInView, revealCls } from "@/hooks/use-in-view";
 import { Building2, Compass, HardHat, ShieldCheck, Sparkles, Trees, ArrowRight } from "lucide-react";
-import gallery1 from "@/assets/gallery-1.jpg.asset.json";
-import gallery2 from "@/assets/gallery-2.jpg.asset.json";
-import gallery3 from "@/assets/gallery-3.jpg.asset.json";
-import gallery4 from "@/assets/gallery-4.jpg.asset.json";
+import gallery1 from "@/assets/gallery-1.jpg";
+import gallery2 from "@/assets/gallery-2.jpg";
+import gallery3 from "@/assets/gallery-3.jpg";
+import gallery4 from "@/assets/gallery-4.jpg";
 import offeringApartment from "@/assets/offering-apartment.jpg";
 import offeringLayout from "@/assets/offering-layout.jpg";
 import offeringVillas from "@/assets/offering-villas.jpg";
@@ -44,7 +44,7 @@ function Hero() {
       <div
         className="absolute inset-0 opacity-40"
         style={{
-          backgroundImage: `url(${gallery1.url})`,
+          backgroundImage: `url(${gallery1})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -108,7 +108,7 @@ function Intro() {
         </div>
         <div {...revealCls(inView, 300)} className={revealCls(inView, 300).className}>
           <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl">
-            <img src={gallery2.url} alt="Fortuners flagship residential development" className="w-full h-[520px] object-cover" />
+            <img src={gallery2} alt="Fortuners flagship residential development" className="w-full h-[520px] object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
           </div>
         </div>
@@ -252,7 +252,7 @@ function Portfolio() {
       <div className="container-x grid gap-14 md:grid-cols-2 items-center">
         <div {...revealCls(inView, 0)} className={revealCls(inView, 0).className}>
           <div className="relative rounded-[2.5rem] overflow-hidden">
-            <img src={gallery3.url} alt="Fortuners development portfolio" className="w-full h-[520px] object-cover" />
+            <img src={gallery3} alt="Fortuners development portfolio" className="w-full h-[520px] object-cover" />
           </div>
         </div>
         <div>

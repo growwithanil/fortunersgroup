@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { submitLead } from "@/lib/submit-lead";
 
 export function EnquireNow() {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -17,14 +20,34 @@ export function EnquireNow() {
     };
   }, [open]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setOpen(false);
-      setSubmitted(false);
-      setForm({ name: "", email: "", phone: "", message: "" });
-    }, 1600);
+    if (sending) return;
+
+    setSending(true);
+    setError(false);
+    try {
+      await submitLead(
+        {
+          Name: form.name,
+          Email: form.email,
+          Phone: form.phone,
+          Message: form.message,
+        },
+        "Enquire Now popup — website",
+      );
+      setSubmitted(true);
+      setTimeout(() => {
+        setOpen(false);
+        setSubmitted(false);
+        setForm({ name: "", email: "", phone: "", message: "" });
+      }, 1600);
+    } catch (err) {
+      console.error(err);
+      setError(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -110,10 +133,17 @@ export function EnquireNow() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full rounded-full py-3 text-sm font-medium text-primary-foreground bg-gradient-to-r from-[#c9b99a] to-[#8b7355] hover:from-[#d4c4a5] hover:to-[#9a8261] transition-all shadow-md"
+                  disabled={sending}
+                  className="w-full rounded-full py-3 text-sm font-medium text-primary-foreground bg-gradient-to-r from-[#c9b99a] to-[#8b7355] hover:from-[#d4c4a5] hover:to-[#9a8261] transition-all shadow-md disabled:opacity-60"
                 >
-                  Submit
+                  {sending ? "Sending…" : "Submit"}
                 </button>
+                {error && (
+                  <p role="alert" className="text-sm text-destructive">
+                    Couldn't send that. Please call{" "}
+                    <a href="tel:+919611213181" className="underline">+91 96112 13181</a> instead.
+                  </p>
+                )}
               </form>
             )}
           </div>

@@ -6,18 +6,34 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-// Assets imported via `*.asset.json` (logos, gallery images, hero videos) are hosted by
-// Lovable and served from `/__l5e/assets-v1/*`. The config's asset-proxy plugin forwards
-// those requests upstream, but only when LOVABLE_PREVIEW_HOST is set — otherwise they 404
-// and the images render broken on a local `vite dev`. Default it to this project's preview
-// host so local dev works out of the box; the Lovable sandbox sets it itself, and `??=`
-// leaves any externally provided value alone. Dev-only: the plugin is `apply: "serve"`.
-process.env.LOVABLE_PREVIEW_HOST ??= "id-preview--57e8c16e-73f7-49cd-9c9a-4182fa3c9ad5.lovable.app";
+// Public origin of the deployed site. Used to build absolute URLs in sitemap.xml.
+const SITE_URL = process.env.SITE_URL ?? "https://fortunersgroup.com";
 
 export default defineConfig({
+  // Nitro is off: its output layout (.output/) hides dist/server/server.js from
+  // Start's prerender preview server, and its `static` preset fights Start's SSR
+  // entry. Without it, Start builds its native dist/{client,server} layout and
+  // the prerenderer writes finished HTML into dist/client — which is exactly what
+  // uploads to Hostinger. dist/server is a build-time artifact, never deployed.
+  nitro: false,
+
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+
+    prerender: {
+      enabled: true,
+      // Follow in-page links so dynamic routes (/blog/$slug) get rendered too.
+      crawlLinks: true,
+      // Write /about as /about/index.html so Apache serves it without rewrite rules.
+      autoSubfolderIndex: true,
+      failOnError: true,
+    },
+
+    sitemap: {
+      enabled: true,
+      host: SITE_URL,
+    },
   },
 });

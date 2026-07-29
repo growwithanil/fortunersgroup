@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { fieldsFromForm, submitLead } from "@/lib/submit-lead";
 
 export const Route = createFileRoute("/channel-partner")({
   head: () => ({
@@ -13,6 +15,24 @@ export const Route = createFileRoute("/channel-partner")({
 });
 
 function ChannelPartnerPage() {
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (status === "sending") return;
+
+    const form = e.currentTarget;
+    setStatus("sending");
+    try {
+      await submitLead(fieldsFromForm(form), "Channel partner registration — website");
+      form.reset();
+      setStatus("sent");
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+    }
+  };
+
   return (
     <section className="pt-32 pb-24 container-x">
       <p className="text-xs uppercase tracking-[0.4em] text-[#b89968] mb-4">Grow with us</p>
@@ -32,16 +52,24 @@ function ChannelPartnerPage() {
         ))}
       </div>
 
-      <form className="max-w-2xl rounded-3xl border border-foreground/10 p-8 space-y-5">
+      <form onSubmit={handleSubmit} className="max-w-2xl rounded-3xl border border-foreground/10 p-8 space-y-5">
         <h2 className="font-serif text-3xl mb-4">Register your interest</h2>
         <div className="grid gap-4 md:grid-cols-2">
-          <input placeholder="Full name" className="w-full rounded-full border border-foreground/15 bg-transparent px-5 py-3 text-sm outline-none focus:border-[#b89968]" />
-          <input placeholder="Company / RERA ID" className="w-full rounded-full border border-foreground/15 bg-transparent px-5 py-3 text-sm outline-none focus:border-[#b89968]" />
-          <input placeholder="Email" className="w-full rounded-full border border-foreground/15 bg-transparent px-5 py-3 text-sm outline-none focus:border-[#b89968]" />
-          <input placeholder="Phone" className="w-full rounded-full border border-foreground/15 bg-transparent px-5 py-3 text-sm outline-none focus:border-[#b89968]" />
+          <input name="Name" autoComplete="name" required placeholder="Full name" className="w-full rounded-full border border-foreground/15 bg-transparent px-5 py-3 text-sm outline-none focus:border-[#b89968]" />
+          <input name="Company" placeholder="Company / RERA ID" className="w-full rounded-full border border-foreground/15 bg-transparent px-5 py-3 text-sm outline-none focus:border-[#b89968]" />
+          <input name="Email" type="email" autoComplete="email" required placeholder="Email" className="w-full rounded-full border border-foreground/15 bg-transparent px-5 py-3 text-sm outline-none focus:border-[#b89968]" />
+          <input name="Phone" type="tel" autoComplete="tel" required placeholder="Phone" className="w-full rounded-full border border-foreground/15 bg-transparent px-5 py-3 text-sm outline-none focus:border-[#b89968]" />
         </div>
-        <textarea placeholder="Tell us about your business" rows={4} className="w-full rounded-3xl border border-foreground/15 bg-transparent px-5 py-3 text-sm outline-none focus:border-[#b89968]" />
-        <button type="button" className="rounded-full bg-[#b89968] text-background px-7 py-3 text-sm hover:bg-[#a48757] transition-colors">Submit Registration</button>
+        <textarea name="About" placeholder="Tell us about your business" rows={4} className="w-full rounded-3xl border border-foreground/15 bg-transparent px-5 py-3 text-sm outline-none focus:border-[#b89968]" />
+        <button type="submit" disabled={status === "sending"} className="rounded-full bg-[#b89968] text-background px-7 py-3 text-sm hover:bg-[#a48757] transition-colors disabled:opacity-60">
+          {status === "sending" ? "Sending…" : status === "sent" ? "Registration received" : "Submit Registration"}
+        </button>
+        {status === "error" && (
+          <p role="alert" className="text-sm text-destructive">
+            Couldn't send that. Please email{" "}
+            <a href="mailto:hello@fortunersgroup.com" className="underline">hello@fortunersgroup.com</a>.
+          </p>
+        )}
       </form>
     </section>
   );

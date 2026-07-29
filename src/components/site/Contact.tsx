@@ -1,10 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import { whatsappLink } from "@/components/site/WhatsAppButton";
+import { fieldsFromForm, submitLead } from "@/lib/submit-lead";
 
 export function Contact() {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const ref = useRef<HTMLDivElement | null>(null);
   const [inView, setInView] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (status === "sending") return;
+
+    const form = e.currentTarget;
+    setStatus("sending");
+    try {
+      await submitLead(fieldsFromForm(form), "Contact section — website");
+      form.reset();
+      setStatus("sent");
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+    }
+  };
 
   useEffect(() => {
     if (!ref.current) return;
@@ -113,7 +130,7 @@ export function Contact() {
         </div>
 
         <form
-          onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+          onSubmit={handleSubmit}
           style={{ transitionDelay: "300ms" }}
           className={
             "bg-card p-8 md:p-10 space-y-5 rounded-3xl border border-primary/10 transition-all duration-[1100ms] ease-out " +
@@ -123,20 +140,20 @@ export function Contact() {
           <div className="grid grid-cols-2 gap-4">
             <label className="block">
               <span className="text-xs uppercase tracking-widest text-muted-foreground">Name</span>
-              <input required className="mt-2 w-full bg-transparent border-b border-border py-2 outline-none focus:border-primary transition" />
+              <input name="Name" autoComplete="name" required className="mt-2 w-full bg-transparent border-b border-border py-2 outline-none focus:border-primary transition" />
             </label>
             <label className="block">
               <span className="text-xs uppercase tracking-widest text-muted-foreground">Phone</span>
-              <input required className="mt-2 w-full bg-transparent border-b border-border py-2 outline-none focus:border-primary transition" />
+              <input name="Phone" type="tel" autoComplete="tel" required className="mt-2 w-full bg-transparent border-b border-border py-2 outline-none focus:border-primary transition" />
             </label>
           </div>
           <label className="block">
             <span className="text-xs uppercase tracking-widest text-muted-foreground">Email</span>
-            <input type="email" required className="mt-2 w-full bg-transparent border-b border-border py-2 outline-none focus:border-primary transition" />
+            <input name="Email" type="email" autoComplete="email" required className="mt-2 w-full bg-transparent border-b border-border py-2 outline-none focus:border-primary transition" />
           </label>
           <label className="block">
             <span className="text-xs uppercase tracking-widest text-muted-foreground">Interest</span>
-            <select className="mt-2 w-full bg-transparent border-b border-border py-2 outline-none focus:border-primary transition">
+            <select name="Interest" className="mt-2 w-full bg-transparent border-b border-border py-2 outline-none focus:border-primary transition">
               <option>Residential</option>
               <option>Commercial</option>
               <option>Plotted Development</option>
@@ -145,14 +162,26 @@ export function Contact() {
           </label>
           <label className="block">
             <span className="text-xs uppercase tracking-widest text-muted-foreground">Message</span>
-            <textarea rows={3} className="mt-2 w-full bg-transparent border-b border-border py-2 outline-none focus:border-primary transition resize-none" />
+            <textarea name="Message" rows={3} className="mt-2 w-full bg-transparent border-b border-border py-2 outline-none focus:border-primary transition resize-none" />
           </label>
           <button
             type="submit"
-            className="w-full rounded-full bg-primary text-primary-foreground py-3.5 text-sm tracking-wide hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            disabled={status === "sending"}
+            className="w-full rounded-full bg-primary text-primary-foreground py-3.5 text-sm tracking-wide hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:hover:scale-100"
           >
-            {sent ? "Thank you — we'll be in touch" : "Send Enquiry"}
+            {status === "sending"
+              ? "Sending…"
+              : status === "sent"
+                ? "Thank you — we'll be in touch"
+                : "Send Enquiry"}
           </button>
+          {status === "error" && (
+            <p role="alert" className="text-sm text-destructive">
+              Something went wrong. Please call{" "}
+              <a href="tel:+919611213181" className="underline">+91 96112 13181</a> or email{" "}
+              <a href="mailto:hello@fortunersgroup.com" className="underline">hello@fortunersgroup.com</a>.
+            </p>
+          )}
         </form>
       </div>
     </section>

@@ -15,7 +15,6 @@ import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { PromoPopup } from "@/components/site/PromoPopup";
 import { EnquireNow } from "@/components/site/EnquireNow";
-import { ChatBot } from "@/components/site/ChatBot";
 import { WhatsAppButton } from "@/components/site/WhatsAppButton";
 
 function NotFoundComponent() {
@@ -133,7 +132,6 @@ function RootComponent() {
         <Footer />
         <PromoPopup />
         <EnquireNow />
-        <ChatBot />
         <WhatsAppButton />
       </div>
     </QueryClientProvider>

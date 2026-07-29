@@ -4,14 +4,14 @@ import { Principles } from "@/components/site/Principles";
 import { Leadership } from "@/components/site/Leadership";
 import { Team } from "@/components/site/Team";
 import { Standard } from "@/components/site/Standard";
-import heroVideo from "@/assets/about-hero.mp4.asset.json";
+import heroVideo from "@/assets/about-hero.mp4";
 
 function AboutHeader() {
   return (
     <section className="relative h-[60svh] min-h-[420px] w-full overflow-hidden bg-black">
       <video
         className="absolute inset-0 h-full w-full object-cover"
-        src={heroVideo.url}
+        src={heroVideo}
         autoPlay
         loop
         muted

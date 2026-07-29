@@ -1,0 +1,91 @@
+# Fortuners Group — static site config for Hostinger (Apache / LiteSpeed).
+# Lives in public/ so `npm run build` copies it into dist/client automatically.
+
+Options -Indexes
+DirectoryIndex index.html
+
+# ---------------------------------------------------------------------------
+# HTTPS
+# Hostinger issues a free SSL certificate. Comment this block out if you upload
+# before the certificate is active, or the site will redirect-loop into an error.
+# ---------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Every route is prerendered to <route>/index.html, so a real file or directory
+  # always wins. Anything else is a genuine 404 and falls through to ErrorDocument.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+</IfModule>
+
+# Unknown URLs render the app's not-found screen while still returning 404,
+# so search engines don't index missing pages as live ones.
+ErrorDocument 404 /index.html
+
+# ---------------------------------------------------------------------------
+# Compression
+# ---------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml application/rss+xml
+</IfModule>
+
+# Images, video and PDFs are already compressed — re-compressing wastes CPU.
+<IfModule mod_setenvif.c>
+  SetEnvIfNoCase Request_URI \.(?:jpe?g|png|gif|webp|avif|ico|mp4|webm|pdf|woff2?)$ no-gzip dont-vary
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# Caching
+# Files under /assets/ carry a content hash in the filename, so they can be
+# cached forever — a change produces a new filename. HTML must never be cached
+# hard, or visitors keep seeing an old page that points at deleted asset hashes.
+# ---------------------------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|jpg|jpeg|png|gif|webp|avif|svg|woff2?|mp4|webm|pdf)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  <FilesMatch "(sitemap\.xml|pages\.json)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # ---------------------------------------------------------------------------
+  # Security headers
+  # ---------------------------------------------------------------------------
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  Header always unset X-Powered-By
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# MIME types (some shared hosts omit these)
+# ---------------------------------------------------------------------------
+<IfModule mod_mime.c>
+  AddType video/mp4 .mp4
+  AddType image/svg+xml .svg
+  AddType image/avif .avif
+  AddType image/webp .webp
+  AddType application/json .json
+  AddType font/woff2 .woff2
+</IfModule>

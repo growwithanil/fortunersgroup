@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, MapPin, Phone, Mail, Building2, Home, Car, ArrowUpDown } from "lucide-react";
-import brochure from "@/assets/fortuners-infra-elixir-brochure.pdf.asset.json";
+import brochure from "@/assets/fortuners-infra-elixir-brochure.pdf";
 
 export const Route = createFileRoute("/projects/elixir")({
   head: () => ({
@@ -93,7 +93,7 @@ function ElixirPage() {
             Crafting the Home of Your Dreams
           </p>
           <a
-            href={brochure.url}
+            href={brochure}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#c9b99a] px-7 py-3 text-sm tracking-widest uppercase text-black hover:bg-[#d9b877] transition"
@@ -236,7 +236,7 @@ function ElixirPage() {
               Our sales team is happy to walk you through the master plan, sample layouts and the site itself. Reach out to schedule a private visit.
             </p>
             <a
-              href={brochure.url}
+              href={brochure}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#1a1408] px-7 py-3 text-sm tracking-widest uppercase text-[#d9b877] hover:bg-black transition"

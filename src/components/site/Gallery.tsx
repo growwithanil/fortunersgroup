@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { useInView, revealCls } from "@/hooks/use-in-view";
-import g1 from "@/assets/gallery-1.jpg.asset.json";
-import g2 from "@/assets/gallery-2.jpg.asset.json";
-import g3 from "@/assets/gallery-3.jpg.asset.json";
-import g4 from "@/assets/gallery-4.jpg.asset.json";
-import g5 from "@/assets/gallery-5.jpg.asset.json";
-import g6 from "@/assets/gallery-6.jpg.asset.json";
+import g1 from "@/assets/gallery-1.jpg";
+import g2 from "@/assets/gallery-2.jpg";
+import g3 from "@/assets/gallery-3.jpg";
+import g4 from "@/assets/gallery-4.jpg";
+import g5 from "@/assets/gallery-5.jpg";
+import g6 from "@/assets/gallery-6.jpg";
 
 const shots = [
-  { src: g1.url, caption: "Aerial View — Fortuners Enclave", span: "md:col-span-2 md:row-span-2" },
-  { src: g2.url, caption: "Front Elevation" },
-  { src: g3.url, caption: "Landscape & Surrounds" },
-  { src: g4.url, caption: "Skyline Perspective", span: "md:col-span-2" },
+  { src: g1, caption: "Aerial View — Fortuners Enclave", span: "md:col-span-2 md:row-span-2" },
+  { src: g2, caption: "Front Elevation" },
+  { src: g3, caption: "Landscape & Surrounds" },
+  { src: g4, caption: "Skyline Perspective", span: "md:col-span-2" },
 ];
 
 export function Gallery() {

@@ -24,7 +24,6 @@ import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as SustainabilityRouteImport } from './routes/sustainability'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as VerticalsRouteImport } from './routes/verticals'
-import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ProjectsElixirRouteImport } from './routes/projects.elixir'
 import { Route as ServicesBuildersRouteImport } from './routes/services.builders'
@@ -106,11 +105,6 @@ const VerticalsRoute = VerticalsRouteImport.update({
   path: '/verticals',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiChatRoute = ApiChatRouteImport.update({
-  id: '/api/chat',
-  path: '/api/chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -153,7 +147,6 @@ export interface FileRoutesByFullPath {
   '/sustainability': typeof SustainabilityRoute
   '/terms': typeof TermsRoute
   '/verticals': typeof VerticalsRoute
-  '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/projects/elixir': typeof ProjectsElixirRoute
   '/services/builders': typeof ServicesBuildersRoute
@@ -176,7 +169,6 @@ export interface FileRoutesByTo {
   '/sustainability': typeof SustainabilityRoute
   '/terms': typeof TermsRoute
   '/verticals': typeof VerticalsRoute
-  '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/projects/elixir': typeof ProjectsElixirRoute
   '/services/builders': typeof ServicesBuildersRoute
@@ -200,7 +192,6 @@ export interface FileRoutesById {
   '/sustainability': typeof SustainabilityRoute
   '/terms': typeof TermsRoute
   '/verticals': typeof VerticalsRoute
-  '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/projects/elixir': typeof ProjectsElixirRoute
   '/services/builders': typeof ServicesBuildersRoute
@@ -225,7 +216,6 @@ export interface FileRouteTypes {
     | '/sustainability'
     | '/terms'
     | '/verticals'
-    | '/api/chat'
     | '/blog/$slug'
     | '/projects/elixir'
     | '/services/builders'
@@ -248,7 +238,6 @@ export interface FileRouteTypes {
     | '/sustainability'
     | '/terms'
     | '/verticals'
-    | '/api/chat'
     | '/blog/$slug'
     | '/projects/elixir'
     | '/services/builders'
@@ -271,7 +260,6 @@ export interface FileRouteTypes {
     | '/sustainability'
     | '/terms'
     | '/verticals'
-    | '/api/chat'
     | '/blog/$slug'
     | '/projects/elixir'
     | '/services/builders'
@@ -295,7 +283,6 @@ export interface RootRouteChildren {
   SustainabilityRoute: typeof SustainabilityRoute
   TermsRoute: typeof TermsRoute
   VerticalsRoute: typeof VerticalsRoute
-  ApiChatRoute: typeof ApiChatRoute
   ServicesBuildersRoute: typeof ServicesBuildersRoute
   ServicesConstructionRoute: typeof ServicesConstructionRoute
   ServicesInteriorRoute: typeof ServicesInteriorRoute
@@ -408,13 +395,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerticalsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/chat': {
-      id: '/api/chat'
-      path: '/api/chat'
-      fullPath: '/api/chat'
-      preLoaderRoute: typeof ApiChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/$slug'
@@ -491,7 +471,6 @@ const rootRouteChildren: RootRouteChildren = {
   SustainabilityRoute: SustainabilityRoute,
   TermsRoute: TermsRoute,
   VerticalsRoute: VerticalsRoute,
-  ApiChatRoute: ApiChatRoute,
   ServicesBuildersRoute: ServicesBuildersRoute,
   ServicesConstructionRoute: ServicesConstructionRoute,
   ServicesInteriorRoute: ServicesInteriorRoute,
